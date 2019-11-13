@@ -434,6 +434,57 @@ http://mysite/country?expand=cities
 }
 ```
 
+#### *Reference groups*
+One can serialize properties that belong to chosen groups only. Add groups to the reference for expand required properties.
+Example: 
+```php
+# YouBundle\Entity\Country.php;
+use Requestum\ApiBundle\Rest\Metadata;
+
+class Country
+{
+    /**
+      * @var int
+      * @Serializer\Groups({"default", "short"})
+      **/
+    protected $id;
+
+    /**
+      * @var string
+      * @Serializer\Groups({"default", "short"})
+      **/
+    protected $name;
+
+    /**
+     * @ORM\OneToMany
+     * @Serializer\Groups({"default", "short"})
+     * @Reference(groups={"short"})
+     **/
+    protected $cities;
+    ...
+}
+```
+Add option ```serialization_groups``` to the service.
+```php
+# config/services.yml
+
+services:
+    ...
+    action.country.short:
+        parent: core.action.abstract
+        class: Requestum\ApiBundle\Action\ListAction
+        arguments:
+            - MyProject\MyBundle\Entity\Сountry
+        calls:
+            - ['setOptions', 
+                [{
+                    ...
+                    'serialization_groups':['short'],
+                }]
+            ]
+    ...
+```
+
 ## Fetch action
 Get single item by identifier. \
 Object type: item \
