@@ -435,7 +435,7 @@ http://mysite/country?expand=cities
 ```
 
 #### *Reference groups*
-One can serialize properties that belong to chosen groups only. Add groups to the reference for expand required properties.
+If in some cases you need response where some of the properties are expanded, you can add serializer group for the reference annotation.
 Example: 
 ```php
 # YouBundle\Entity\Country.php;
